@@ -1,20 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import 'rxjs/add/operator/map';
+import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/Rx';
+//import 'rxjs/add/operator/map';
+
+import { Post } from '../models/post';
+
 @Injectable()
 export class DataService {
- 
-  constructor(public http:Http) {
+  private blogPostUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+  constructor(private http:Http) {
         console.log('Data Services connected...!');
   }
  
   getPosts(){
-    return this.http.get('https://jsonplaceholder.typicode.com/posts')
-    .map(res => res.json());
+    return this.http.get(this.blogPostUrl);//.map(res => res.json());
   }
  
-  savePosts(posts){
-    return this.http.post('https://jsonplaceholder.typicode.com/posts', posts).subscribe();
+  savePost(pst: Post): Observable<Response>{
+    let hdr = new Headers({'Content-Type': 'application/json'});
+    let optns = new RequestOptions({headers: hdr});
+    return this.http.post(this.blogPostUrl, JSON.stringify(pst), optns);
+  }
+
+  updatePost(id:string, pst: Post): Observable<Response>{
+    let hdr = new Headers({'Content-Type': 'application/json'});
+    let optns = new RequestOptions({headers: hdr});
+    return this.http.put(this.blogPostUrl +'/' + id, JSON.stringify(pst), optns);
+  }
+
+  deletePost(id:string): Observable<Response>{
+    return this.http.delete(this.blogPostUrl +'/' + id);
   }
  
   getAccounts(){

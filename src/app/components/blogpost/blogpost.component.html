@@ -1,6 +1,66 @@
-<h1>Posts</h1>
+<!--<h1>Posts</h1>
 <div>
-  <table><tr><th>Id</th><th>UserId</th><th>Title</th></tr>
-    <tr *ngFor="let p of posts"><td>{{p.id}}</td><td>{{p.userId}}</td><td>{{p.title}}</td></tr>
+  <table><tr><th>Id</th><th>UserId</th><th>Title</th><th>Body</th></tr>
+    <tr *ngFor="let p of posts"><td>{{p.id}}</td><td>{{p.userId}}</td><td>{{p.title}}</td><td>{{p.body}}</td></tr>
   </table>
+</div>-->
+<h1>{{message}}</h1>
+<hr>
+<div>{{statusMessage}}</div>
+<hr>
+<input type="button" value="Add" class="btn btn-default" (click)="addPost()" />
+<div style="overflow:auto">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>UserId</td>
+                <td>Title</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let p of posts;let i=idx">
+                <ng-template [ngTemplateOutlet]="loadTemplate(p)" [ngOutletContext]="{ $implicit: p, idx: i }"></ng-template>
+            </tr>
+
+        </tbody>
+    </table>
 </div>
+
+
+<!--The Html Template for Read-Only Rows-->
+<ng-template #readOnlyTemplate let-p>
+    <td>{{p.id}}</td>
+    <td>{{p.userId}}</td>
+    <td>{{p.title}}</td>
+    <td>
+        <input type="button" value="Edit" class="btn btn-default" (click)="editPost(p)" />
+    </td>
+    <td>
+        <input type="button" value="Delete" (click)="deletePost(p)" class="btn btn-danger" />
+    </td>
+</ng-template>
+<!--Ends Here-->
+
+<!--The Html Template for Editable Rows-->
+<ng-template #editTemplate>
+    <td>
+        <input type="text" [(ngModel)]="selectedPost.id" readonly disabled/>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="selectedPost.userId" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="selectedPost.title" />
+    </td>
+    <td>
+        <input type="button" value="Save" (click)="saveBlog()" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+    </td>
+
+</ng-template>
+<!--Ends Here-->
