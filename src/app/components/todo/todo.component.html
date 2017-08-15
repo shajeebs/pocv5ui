@@ -1,7 +1,26 @@
 <h1>{{message}}</h1>
 <div>{{statusMessage}}</div>
 <hr>
-<input type="button" value="Add" class="btn btn-default" (click)="addTodo()" />
+<!--<input type="button" value="Add" class="btn btn-default" (click)="addTodo()" />-->
+<button (click)="showAdd()">Add Todo</button>
+<div *ngIf=isEdit>
+  <h1>Add Todo</h1>
+  <form>
+    <span class="form-group">
+      <label for="name">Name: * </label>
+      <input type="text" [(ngModel)]="todo.name" name="name" required>
+    </span>
+    <span class="form-group">
+      <label for="comment">Comment: </label>
+      <input type="text" [(ngModel)]="todo.comment" name="comment">
+    </span>
+    
+    <input type="button" value="Save" (click)="saveTodo()" class="btn btn-success" />
+    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+  </form>
+</div>
+
+
 <div style="overflow:auto">
     <table class="table table-bordered table-striped">
         <thead>

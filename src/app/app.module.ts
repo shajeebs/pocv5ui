@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
  
 import { DataService } from './services/data.service';
+import { TodoService } from './services/todo.service';
 import { BlogpostComponent } from './components/blogpost/blogpost.component';
 import { AccountComponent } from './components/account/account.component';
 import { TodoComponent } from './components/todo/todo.component';
@@ -31,7 +32,7 @@ const appRoutes: Routes = [
     BrowserModule, FormsModule, HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [DataService],
+  providers: [DataService, TodoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

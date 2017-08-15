@@ -4,7 +4,7 @@ import {Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 
-import { DataService }  from '../../services/data.service';
+import { TodoService }  from '../../services/todo.service';
 import { Todo } from '../../models/Todo';
 
 @Component({
@@ -20,17 +20,27 @@ export class TodoComponent implements OnInit {
   selectedTodo:Todo;
   isNewRecord:boolean;
   statusMessage:string;
-  
-  constructor(private ds:DataService) { }
+  isEdit:boolean = false;
 
-  ngOnInit() { this.getTodos();
+  constructor(private tds:TodoService) { }
+
+  ngOnInit() {
+    //console.log('TodoComponent ngOnInit'); 
+    this.getTodos();
   }
 
-  addTodo(){
-    //this.selectedTodo = new Todo('','','',null,null);
-    this.todos.push(this.selectedTodo);
-        this.isNewRecord = true;
+  showAdd(){
+    this.isEdit = !this.isEdit;
+    this.isNewRecord = true;
+    console.log(this.todo);
+    
   }
+
+  // addTodo(){
+  //   //this.selectedTodo = new Todo('','','',null,null);
+  //   this.todos.push(this.selectedTodo);
+  //       this.isNewRecord = true;
+  // }
 
   editTodo(td:Todo){
     this.selectedTodo = td;
@@ -50,7 +60,7 @@ export class TodoComponent implements OnInit {
   }
 
   getTodos(){
-    this.ds.getTodos().subscribe((resp: Response) => { console.log(this.todos);
+    this.tds.getTodos().subscribe((resp: Response) => { //console.log(this.todos);
       this.todos = resp.json();
     });
   }
@@ -58,7 +68,8 @@ export class TodoComponent implements OnInit {
   saveTodo(){
     if(this.isNewRecord){
         //add a new Post
-          this.ds.saveTodo(this.selectedTodo).subscribe((resp : Response) => {
+        console.log(this.todo);
+          this.tds.saveTodo(this.todo).subscribe((resp : Response) => {
             this.todo = resp.json(),
             this.statusMessage = 'Record Added Successfully.',
               this.getTodos();
@@ -68,7 +79,7 @@ export class TodoComponent implements OnInit {
         
     }else{
         //edit the record
-          this.ds.updateTodo(this.selectedTodo._id, this.selectedTodo).subscribe((resp : Response) => {
+          this.tds.updateTodo(this.selectedTodo._id, this.selectedTodo).subscribe((resp : Response) => {
             this.statusMessage = 'Record Updated Successfully.',
             this.getTodos();
         });
@@ -78,7 +89,7 @@ export class TodoComponent implements OnInit {
 
   deleteTodo(pst:Todo){
     console.log('Deleted...!');
-    this.ds.deleteTodo(pst._id).subscribe((resp : Response) => { 
+    this.tds.deleteTodo(pst._id).subscribe((resp : Response) => { 
                 this.statusMessage = 'Record Deleted Successfully.',
                 this.getTodos();
     });
