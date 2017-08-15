@@ -5,10 +5,12 @@ import 'rxjs/Rx';
 //import 'rxjs/add/operator/map';
 
 import { Post } from '../models/post';
+import { Todo } from '../models/todo';
 
 @Injectable()
 export class DataService {
   private blogPostUrl = 'https://jsonplaceholder.typicode.com/posts';
+  private blogTodoUrl = 'http://localhost:3000/todo';
 
   constructor(private http:Http) {
         console.log('Data Services connected...!');
@@ -37,6 +39,26 @@ export class DataService {
   getAccounts(){
     return this.http.get('http://localhost:3000/Account')
     .map(res => res.json());
+  }
+
+  getTodos(){
+    return this.http.get(this.blogTodoUrl);
+  }
+ 
+  saveTodo(td: Todo): Observable<Response>{
+    let hdr = new Headers({'Content-Type': 'application/json'});
+    let optns = new RequestOptions({headers: hdr});
+    return this.http.post(this.blogTodoUrl, JSON.stringify(td), optns);
+  }
+
+  updateTodo(id:string, td: Todo): Observable<Response>{
+    let hdr = new Headers({'Content-Type': 'application/json'});
+    let optns = new RequestOptions({headers: hdr});
+    return this.http.put(this.blogTodoUrl +'/' + id, JSON.stringify(td), optns);
+  }
+
+  deleteTodo(id:string): Observable<Response>{
+    return this.http.delete(this.blogTodoUrl +'/' + id);
   }
  
 }

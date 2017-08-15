@@ -10,11 +10,13 @@ import { UserComponent } from './components/user/user.component';
 import { DataService } from './services/data.service';
 import { BlogpostComponent } from './components/blogpost/blogpost.component';
 import { AccountComponent } from './components/account/account.component';
+import { TodoComponent } from './components/todo/todo.component';
  
 const appRoutes: Routes = [
   {path:'', component:UserComponent },
   {path:'blogpost', component:BlogpostComponent },
   {path:'account', component:AccountComponent },
+  {path:'todo', component:TodoComponent },
 ];
  
 @NgModule({
@@ -23,6 +25,7 @@ const appRoutes: Routes = [
     UserComponent,
     BlogpostComponent,
     AccountComponent,
+    TodoComponent,
   ],
   imports: [
     BrowserModule, FormsModule, HttpModule,

@@ -1,0 +1,60 @@
+<h1>{{message}}</h1>
+<div>{{statusMessage}}</div>
+<hr>
+<input type="button" value="Add" class="btn btn-default" (click)="addTodo()" />
+<div style="overflow:auto">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Name</td>
+                <td>Comment</td>
+                <td>Created Time</td>
+                <td>Modified Time</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let td of todos;let i=idx">
+                <ng-template [ngTemplateOutlet]="loadTemplate(td)" [ngOutletContext]="{ $implicit: td, idx: i }"></ng-template>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--The Html Template for Read-Only Rows-->
+<ng-template #readOnlyTemplate let-td>
+    <td>{{td._id}}</td>
+    <td>{{td.name}}</td>
+    <td>{{td.comment}}</td>
+    <td>{{td.created}}</td>
+    <td>{{td.modified}}</td>
+    <td>
+        <input type="button" value="Edit" class="btn btn-default" (click)="editTodo(td)" />
+    </td>
+    <td>
+        <input type="button" value="Delete" (click)="deleteTodo(td)" class="btn btn-danger" />
+    </td>
+</ng-template>
+<!--Ends Here-->
+
+<!--The Html Template for Editable Rows-->
+<ng-template #editTemplate>
+    <td>
+        <input type="text" [(ngModel)]="selectedTodo._id" readonly disabled/>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="selectedTodo.name" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="selectedTodo.comment" />
+    </td>
+    <td>
+        <input type="button" value="Save" (click)="saveTodo()" class="btn btn-success" />
+    </td>
+    <td>
+        <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+    </td>
+
+</ng-template>
+<!--Ends Here-->
